@@ -71,6 +71,8 @@
   gUefiOvmfPkgTokenSpaceGuid.Pcd8259LegacyModeEdgeLevel
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFdBaseAddress
   gUefiOvmfPkgTokenSpaceGuid.PcdTdRelocatedMailboxBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdXenPvhStartOfDayStructPtr
+  gUefiOvmfPkgTokenSpaceGuid.PcdXenPvhStartOfDayStructPtrSize
 
 [Depex]
   gEfiAcpiTableProtocolGuid
