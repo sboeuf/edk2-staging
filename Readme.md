@@ -121,6 +121,15 @@ EFI REST JSON Structure DXE implementation (UEFI spec 2.8, section 29.7.3).
 ### EFI Redfish REST JSON C Structure drivers
 EFI Redfish REST JSON to C Structure convertor implementations (UEFI spec 2.8, section 31.2).
 
+## BIOS Resource Provisiong
+In order to align with the onging discussion in Redfish Host Interface Working Group regards to BIOS Redfish resource provisioning, two addtional EFI protocols are added to EDK2 Redfish POC code architecture. With these two EFI protocols instroduced, the payload format of BIOS Resfish resource and the transport for provisioning BIOS resource could be OEM implementation-specific (e.g. provisioing BIOS resource through IPMI protocol over the particular transport suach as KCS style transport. For EDK2 open source, the payload format of BIOS provisiong resource is in HTTP-JSON, the transport for delivering BIOS resource is HTTP over EFI network stack.
+
+### EFI BIOS Resource Provision Generation Protocol
+The protocol which provided by platform to generate BIOS Redfish resource in the particular format for the provisioning.
+
+### EFI BIOS Resource Provision Transport Layer Protocol
+The protocol which provided by platform to deliver BIOS Redfish resource for the provisioning.
+
 # Timeline
 | Time | Event | Related Modules |
 |:----:|:-----:|:--------------:|
