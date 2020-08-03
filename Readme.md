@@ -136,4 +136,5 @@ The protocol which provided by platform to deliver BIOS Redfish resource for the
 | 2019.01 | Initial open source release of UEFI Redfish feature. | Refer to "Related Modules" |
 | 2019.08 | UEFI Redfish feature re-architecture proposal in Tianocore design meeting | |
 | 2019.10 | Final solution of UEFI Redfish feature| Refer to above figure| |
-| 2020.01 (planed)| Contribute UEFI Redfish re-architecture code to edk2-staging| |
+| 2020.08 | Update final solution of UEFI Redfish feature| Refer to above figure| |
+| 2020.?? | Contribute UEFI Redfish re-architecture code to edk2-staging| |
