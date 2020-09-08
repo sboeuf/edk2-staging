@@ -27,7 +27,7 @@ Below is the block diagram of UEFI Redfish edk2 solution. [[1]](#[1]) in the fig
 
 ![UEFI Redfish final Solution Layout](https://github.com/tianocore/edk2-staging/blob/UEFI_Redfish/Images/RedfishDriverStack.png?raw=true)
 
-##EFI Redfish Driver Stacks 
+## EFI Redfish Driver Stacks 
 Below are items defined in UEFI Redfish edk2 project.
 
 ### EFI Redfish Host Interface DXE Driver (***UEFI spec ECR is required***)
