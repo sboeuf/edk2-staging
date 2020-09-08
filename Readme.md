@@ -62,6 +62,10 @@ EFI REST JSON Structure DXE implementation (UEFI spec 2.8, section 29.7.3). ***(
 
 EFI Redfish REST JSON to C Structure converter implementations (UEFI spec 2.8, section 31.2).***([D7] in above figure)***
 
+### EFI Source Coding Drivers (***UEFI spec ECR is required***)
+
+The centrlized driver which provide compress and decomparess algorithms for UEFI system, such as gzip, brotli, LZMA and etc. UEFI Redfish edk2 solution could leverage EFI Source Coding Protocol to (de)compress the payload using gzip algorithm. ***([D14] in above figure)***
+
 ## BIOS Resource Provisioning Drivers
 In order to align with the ongoing discussion in Redfish Host Interface Working Group regards to BIOS Redfish resource provisioning, two additional EFI protocols are added to EDK2 Redfish POC architecture. With these two EFI protocols introduced, the payload format of BIOS Redfish resource and the transport for provisioning BIOS resource could be OEM implementation-specific (e.g. provisioning BIOS resource through IPMI protocol over the particular transport such as KCS style transport). For EDK2 open source, the payload format of BIOS provisioning resource is in HTTP-JSON format, the transport for delivering BIOS resource is HTTP over EFI network stack.
 
