@@ -148,7 +148,50 @@ If a subset feature or a bug fix in this staging branch could meet below require
 
 Auto-generate EFI Redfish feature driver source code to incorporate with auto-generated EFI Redfish REST JSON to C Structure converter library to map HII option to Redfish property defined in the specific Redfish schema. 
 
-***This is under development***
+![UEFI BIOS Configuration to Redfish Layout](https://github.com/tianocore/edk2-staging/blob/UEFI_Redfish/Images/BiosConfigurationToRedfish.png?raw=true)
+
+### Bios Configuration to Redfish Property
+
+Incorporate Redfish standard system management with edk2 HII infrastructure in order to increase the interoperability among systems and the capability of remote management on UEFI based firmware configurations. 
+
+  The way to acheive this is by defining the relationship between HII option and the property in Redfish schema in HII UNI file. With the EDK2 multi-language support, we define a special language called "x-uefi-redfish" and describe the mapping between HII option and property in schema. This is an example:
+  ```C
+  #string STR_BOOT_SOURCE_OVERRIDE_ENABLED_PROMPT     #language x-uefi-redfish-ComputerSystem.v1_0_0   "/Boot/BootSourceOverrideEnabled"
+  #string STR_BOOT_SOURCE_OVERRIDE_MODE_PROMPT        #language x-uefi-redfish-ComputerSystem.v1_0_0   "/Boot/BootSourceOverrideMode"
+  #string STR_BOOT_SOURCE_OVERRIDE_TARGET_PROMPT      #language x-uefi-redfish-ComputerSystem.v1_0_0   "/Boot/BootSourceOverrideTarget"
+  ```
+
+### x-uefi-redfish configure language
+  * Language format
+     `x-uefi-redfish-$(NAMESPACE)`, where `$(NAMESPACE)` is the combination of Redfish ResourceTypeName and schema version. For example, if the HII option is mapped to the property in Processor.v1_0_0. The x-uefi-redfish configure language is declared as: `x-uefi-redfish-Processor.v1_0_0`
+  * String format
+    - The string declared with `x-uefi-redfish` configure language is a path to the property in Redfish resource.
+    - The root of path is the Redfish resource type indicated in x-uefi-redfish configure language.
+    - The path is relative to root of Redfish resource type, not related to Redfish service root.
+    - Property in collection object: `{NUM}`
+      ```C
+      #string STR_MEMORY_1_BASE_MODULE_TYPE_PROMPT         #language x-uefi-redfish-Memory.v1_7_1   "/Memory/{1}/BaseModuleType"
+      #string STR_MEMORY_2_BASE_MODULE_TYPE_PROMPT         #language x-uefi-redfish-Memory.v1_7_1   "/Memory/{2}/BaseModuleType"
+      #string STR_MEMORY_3_BASE_MODULE_TYPE_PROMPT         #language x-uefi-redfish-Memory.v1_7_1   "/Memory/{3}/BaseModuleType"
+      ```
+    - Property in array object: `[NUM]`
+      ```C
+      #string STR_BOOT_ORDER_1_PROMPT                      #language x-uefi-redfish-ComputerSystem.v1_11_0   "/Boot/BootOrder/[1]/Boot0001"
+      #string STR_BOOT_ORDER_2_PROMPT                      #language x-uefi-redfish-ComputerSystem.v1_11_0   "/Boot/BootOrder/[2]/Boot0002"
+      #string STR_BOOT_ORDER_3_PROMPT                      #language x-uefi-redfish-ComputerSystem.v1_11_0   "/Boot/BootOrder/[3]/Boot0003"      
+      ```
+      
+### EFI BIOS Config To Redfish Protocol (***UEFI spec ECR is required***)
+
+This is the interface protocol that is used to retrieve the configuration from BIOS and update the configuration to BIOS while new future settings is applied from Redfish.
+
+### EFI Resource Config Protocol (***UEFI spec ECR is required***)
+
+This is the interface protocol which is used to communicate between collection type of feature driver and non-collection type of feature driver. As there are many feature drivers with different schema version, collection type of feature driver could utilize this protocol to find corresponding schema version of feature driver.
+
+### Python program to generate Redfish feature drivers automatically
+
+In order to generate Redfish feature drivers automatically, python program will consume the Redfish schema JSON file that is published by [DMTF Redfish](https://www.dmtf.org/standards/redfish).  By parsing the the schema in JSON format and combining with the Redfish JSON-CStructure, Redfish feature drivers could be generated to handle corresponding Redfish resource.
 
 ## <a name="[2]">[2] Remove the Dependence with libredfish Library</a>
 
