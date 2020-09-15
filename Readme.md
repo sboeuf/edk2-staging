@@ -193,6 +193,11 @@ This is the interface protocol which is used to communicate between collection t
 
 In order to generate Redfish feature drivers automatically, python program will consume the Redfish schema JSON file that is published by [DMTF Redfish](https://www.dmtf.org/standards/redfish).  By parsing the the schema in JSON format and combining with the Redfish JSON-CStructure, Redfish feature drivers could be generated to handle corresponding Redfish resource.
 
+### Auto-selecting Redfish feature drivers
+
+As there are many Redfish feature drivers and normally we will only support certain version of Redfish resource in our system, we need edk2 build tool to pick up necessary Redfish feature drivers during build process. In order to do this, edk2 build tool have to scan UNI files that are included in build process. By checking the supported `x-uefi-redfish` language, edk2 build tool could learn the information about target Redfish schema that would be supported by this driver. (e.g. `x-uefi-redfish-Memory.v1_7_1` refers to Memory schema with version 1.7.1) With this information, edk2 build tool could programmatically add corresponding Redfish feature drivers into target DSC/FDF file. Then the Redfish feature drivers to support Redfish resource are selected automatically. User does not need to include correct version of Redfish feature drivers manually.
+
+
 ## <a name="[2]">[2] Remove the Dependence with libredfish Library</a>
 
 Replaced by EFI Redfish Discover DXE driver and EFI REST EX UEFI Driver.
