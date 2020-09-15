@@ -8,6 +8,7 @@ Fu Siyuan <siyuan.fu@intel.com>\
 Ye Ting <ting.ye@intel.com>\
 Wang Fan <fan.wang@intel.com>\
 Wu Jiaxin <jiaxin.wu@intel.com>\
+Yao, Jiewen <jiewen.yao@intel.com>\
 Chang Abner <abner.chang@hpe.com>\
 Wang Nickle <nickle.wang@hpe.com>
 
@@ -15,6 +16,7 @@ Wang Nickle <nickle.wang@hpe.com>
 Fu Siyuan <siyuan.fu@intel.com>\
 Wang Fan <fan.wang@intel.com>\
 Wu Jiaxin <jiaxin.wu@intel.com>\
+Yao, Jiewen <jiewen.yao@intel.com>\
 Chang Abner <abner.chang@hpe.com>\
 Wang Nickle <nickle.wang@hpe.com>
 
