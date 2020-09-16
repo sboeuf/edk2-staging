@@ -122,31 +122,7 @@ The ultimate goal [[1]](#[1]) is to auto-generate EFI Redfish feature driver for
    2) An user guide for how to configure UEFI Redfish through Postman 
    (**RedfishTool\PostmanToConfigUefiRedfish UserGuide\UserGuide.md**).
 
-## Promote to edk2 Trunk
-If a subset feature or a bug fix in this staging branch could meet below requirement, it could be promoted to edk2 trunk and removed from this staging branch:
-* Meet all edk2 required quality criteria.
-* Support both IA32 and X64 Platform.
-* Work on [Redfish Profile Simulator](https://github.com/DMTF/Redfish-Profile-Simulator).
-* Ready for product integration.
-
-## Related Materials
-1. DSP0270 - Redfish Host Interface Specification, 1.2.0
-2. DSP0266 - Redfish Specification, 1.11.0
-3. UEFI Configuration Namespace Registry - http://www.uefi.org/confignamespace
-4. Redfish Schemas - https://redfish.dmtf.org/schemas/v1/
-5. UEFI Specification - http://uefi.org/specifications
-
-# Timeline
-| Time | Event |
-|:----:|:-----:|
-| 2019.01 | Initial open source release of UEFI Redfish edk2 solution. |
-| 2019.08 | UEFI Redfish edk2 solution re-architecture proposal in Tianocore design meeting |
-| 2019.10 | Final solution of UEFI Redfish feature|
-| 2020.08 | Update final solution of UEFI edk2 Redfish solution|
-| 2020.?? | Contribute UEFI Redfish edk2 solution code to edk2-staging|
-
-# Notes
-## <a name="[1]">[1] Auto-Generated EFI Redfish Feature Drivers</a>
+## <a name="[1]">Auto-Generated EFI Redfish Feature Drivers</a>
 
 Auto-generate EFI Redfish feature driver source code to incorporate with auto-generated EFI Redfish REST JSON to C Structure converter library to map HII option to Redfish property defined in the specific Redfish schema. 
 
@@ -199,7 +175,29 @@ In order to generate Redfish feature drivers automatically, python program will 
 
 As there are many Redfish feature drivers and normally we will only support certain version of Redfish resource in our system, we need edk2 build tool to pick up necessary Redfish feature drivers during build process. In order to do this, edk2 build tool have to scan UNI files that are included in build process. By checking the supported `x-uefi-redfish` language, edk2 build tool could learn the information about target Redfish schema that would be supported by this driver. (e.g. `x-uefi-redfish-Memory.v1_7_1` refers to Memory schema with version 1.7.1) With this information, edk2 build tool could programmatically add corresponding Redfish feature drivers into target DSC/FDF file. Then the Redfish feature drivers to support Redfish resource are selected automatically. User does not need to include correct version of Redfish feature drivers manually.
 
-
-## <a name="[2]">[2] Remove the Dependence with libredfish Library</a>
+## <a name="[2]">Remove the Dependence with libredfish Library</a>
 
 Replaced by EFI Redfish Discover DXE driver and EFI REST EX UEFI Driver.
+
+## Promote to edk2 Trunk
+If a subset feature or a bug fix in this staging branch could meet below requirement, it could be promoted to edk2 trunk and removed from this staging branch:
+* Meet all edk2 required quality criteria.
+* Support both IA32 and X64 Platform.
+* Work on [Redfish Profile Simulator](https://github.com/DMTF/Redfish-Profile-Simulator).
+* Ready for product integration.
+
+## Related Materials
+1. DSP0270 - Redfish Host Interface Specification, 1.2.0
+2. DSP0266 - Redfish Specification, 1.11.0
+3. UEFI Configuration Namespace Registry - http://www.uefi.org/confignamespace
+4. Redfish Schemas - https://redfish.dmtf.org/schemas/v1/
+5. UEFI Specification - http://uefi.org/specifications
+
+# Timeline
+| Time | Event |
+|:----:|:-----:|
+| 2019.01 | Initial open source release of UEFI Redfish edk2 solution. |
+| 2019.08 | UEFI Redfish edk2 solution re-architecture proposal in Tianocore design meeting |
+| 2019.10 | Final solution of UEFI Redfish feature|
+| 2020.08 | Update final solution of UEFI edk2 Redfish solution|
+| 2020.?? | Contribute UEFI Redfish edk2 solution code to edk2-staging|
