@@ -60,7 +60,7 @@ This is the DXE driver as the interface between EFI Redfish feature drivers and 
 
 EFI REST JSON Structure DXE implementation (UEFI spec 2.8, section 29.7.3). ***([D6] in above figure)***
 
-### EFI Redfish REST JSON C Structure Drivers (***UEFI spec ECR is required***)
+### EFI Redfish REST JSON C Structure Drivers
 
 EFI Redfish REST JSON to C Structure converter implementations (UEFI spec 2.8, section 31.2).***([D7] in above figure)***
 
