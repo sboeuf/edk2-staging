@@ -34,7 +34,7 @@ Below is the block diagram of UEFI Redfish edk2 solution. [[1]](#[1]) in the fig
 ## EFI Redfish Driver Stacks 
 Below are items defined in UEFI Redfish edk2 project.
 
-### EFI Redfish Host Interface DXE Driver (***UEFI spec ECR is required***)
+### EFI Redfish Host Interface DXE Driver
 
 The abstract DXE driver to create SMBIOS type 42 record through EFI SMBIOS protocol according to device descriptor and protocol type data (defined in SMBIOS type 42h) provided by platform level Redfish host interface library. On edk2 open source implementation (**EmulatorPkg**), SMBIOS type 42 data is retrieved from EFI variable which is created using RedfishPlatformConfig.efi under EFI shell. OEM may provide its own PlatformHostInterfaceLib instance for the platform-specific implementation. ***([D1] in above figure)***
 
