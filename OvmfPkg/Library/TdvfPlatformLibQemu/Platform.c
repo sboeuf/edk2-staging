@@ -178,6 +178,8 @@ MiscInitialization (
       AcpiCtlReg = POWER_MGMT_REGISTER_Q35 (ICH9_ACPI_CNTL);
       AcpiEnBit  = ICH9_ACPI_CNTL_ACPI_EN;
       break;
+    case 0xd57:
+      return;
     default:
       DEBUG ((EFI_D_ERROR, "%a: Unknown Host Bridge Device ID: 0x%04x\n",
         __FUNCTION__, PlatformInfoHob->HostBridgePciDevId));
