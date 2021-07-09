@@ -16,6 +16,7 @@
 #include <Library/PrePiLibTdx.h>
 #include <Library/TdvfPlatformLib.h>
 #include <Library/TpmMeasurementLib.h>
+#include <Library/ChVmmDataLib.h>
 #include <IndustryStandard/Tdx.h>
 #include <IndustryStandard/UefiTcgPlatform.h>
 #include "TdxStartupInternal.h"
@@ -256,6 +257,22 @@ ValidateHobList (
 }
 
 /**
+  Processing the TdVmmHob provided by Cloud-Hypervisor.
+
+  Only the TdVmmData types needed by SEC phase will be parsed.
+
+  @param[in] Hob    The hob pointer of the TdVmmData item.
+
+**/
+VOID
+ProcessTdVmmHob (
+  IN EFI_PEI_HOB_POINTERS        Hob
+  )
+{
+  
+}
+
+/**
   Processing the incoming HobList for the TD
 
   Firmware must parse list, and accept the pages of memory before their can be
@@ -292,38 +309,44 @@ ProcessHobList (
   // Parse the HOB list until end of list or matching type is found.
   //
   while (!END_OF_HOB_LIST (Hob)) {
+    switch (Hob.Header->HobType) {
+      case EFI_HOB_TYPE_RESOURCE_DESCRIPTOR:
+        DEBUG ((DEBUG_INFO, "\nResourceType: 0x%x\n", Hob.ResourceDescriptor->ResourceType));
 
-    if (Hob.Header->HobType == EFI_HOB_TYPE_RESOURCE_DESCRIPTOR) {
-      DEBUG ((DEBUG_INFO, "\nResourceType: 0x%x\n", Hob.ResourceDescriptor->ResourceType));
+        //
+        // FixMe:
+        // We only accept the ResourceType (EFI_RESOURCE_UNACCEPTED_MEMORY)
+        // But this ResourceType is still in upstream.
+        // So now we accept the ResourceType (EFI_RESOURCE_SYSTEM_MEMORY) without
+        // EFI_RESOURCE_ATTRIBUTE_ENCRYPTED.
+        // After EFI_RESOURCE_UNACCEPTED_MEMORY is in EDK2, then we switch to it.
+        //
+        if (Hob.ResourceDescriptor->ResourceType == EFI_RESOURCE_SYSTEM_MEMORY) {
 
-      //
-      // FixMe:
-      // We only accept the ResourceType (EFI_RESOURCE_UNACCEPTED_MEMORY)
-      // But this ResourceType is still in upstream.
-      // So now we accept the ResourceType (EFI_RESOURCE_SYSTEM_MEMORY) without
-      // EFI_RESOURCE_ATTRIBUTE_ENCRYPTED.
-      // After EFI_RESOURCE_UNACCEPTED_MEMORY is in EDK2, then we switch to it.
-      //
-      if (Hob.ResourceDescriptor->ResourceType == EFI_RESOURCE_SYSTEM_MEMORY) {
+          DEBUG ((DEBUG_INFO, "ResourceAttribute: 0x%x\n", Hob.ResourceDescriptor->ResourceAttribute));
+          DEBUG ((DEBUG_INFO, "PhysicalStart: 0x%llx\n", Hob.ResourceDescriptor->PhysicalStart));
+          DEBUG ((DEBUG_INFO, "ResourceLength: 0x%llx\n", Hob.ResourceDescriptor->ResourceLength));
+          DEBUG ((DEBUG_INFO, "Owner: %g\n\n", &Hob.ResourceDescriptor->Owner));
 
-        DEBUG ((DEBUG_INFO, "ResourceAttribute: 0x%x\n", Hob.ResourceDescriptor->ResourceAttribute));
-        DEBUG ((DEBUG_INFO, "PhysicalStart: 0x%llx\n", Hob.ResourceDescriptor->PhysicalStart));
-        DEBUG ((DEBUG_INFO, "ResourceLength: 0x%llx\n", Hob.ResourceDescriptor->ResourceLength));
-        DEBUG ((DEBUG_INFO, "Owner: %g\n\n", &Hob.ResourceDescriptor->Owner));
+          PhysicalEnd = Hob.ResourceDescriptor->PhysicalStart + Hob.ResourceDescriptor->ResourceLength;
 
-        PhysicalEnd = Hob.ResourceDescriptor->PhysicalStart + Hob.ResourceDescriptor->ResourceLength;
-
-        if (PhysicalEnd <= BASE_4GB) {
-          if ((LowMemoryResource == NULL) || (Hob.ResourceDescriptor->ResourceLength > LowMemoryResource->ResourceLength)) {
-            LowMemoryResource = Hob.ResourceDescriptor;
+          if (PhysicalEnd <= BASE_4GB) {
+            if ((LowMemoryResource == NULL) || (Hob.ResourceDescriptor->ResourceLength > LowMemoryResource->ResourceLength)) {
+              LowMemoryResource = Hob.ResourceDescriptor;
+            }
           }
-        }
 
-        MpAcceptMemoryResourceRange (
-            Hob.ResourceDescriptor->PhysicalStart,
-            PhysicalEnd);
-      }
+          MpAcceptMemoryResourceRange (
+              Hob.ResourceDescriptor->PhysicalStart,
+              PhysicalEnd);
+        }
+        break;
+      case EFI_HOB_TYPE_GUID_EXTENSION:
+        ProcessTdVmmHob (Hob);
+        break;
+
     }
+    
     Hob.Raw = GET_NEXT_HOB (Hob);
   }
 
@@ -366,6 +389,7 @@ TransferHobList (
   EFI_PEI_HOB_POINTERS        Hob;
   EFI_RESOURCE_ATTRIBUTE_TYPE ResourceAttribute;
   EFI_PHYSICAL_ADDRESS        PhysicalEnd;
+  TD_VMM_DATA                *VmmData;
 
   Hob.Raw = (UINT8 *) VmmHobList;
   while (!END_OF_HOB_LIST (Hob)) {
@@ -392,6 +416,10 @@ TransferHobList (
         Hob.MemoryAllocation->AllocDescriptor.MemoryBaseAddress,
         Hob.MemoryAllocation->AllocDescriptor.MemoryLength,
         Hob.MemoryAllocation->AllocDescriptor.MemoryType);
+      break;
+    case EFI_HOB_TYPE_GUID_EXTENSION:
+      VmmData = (TD_VMM_DATA *) (&Hob.Guid->Name + 1);
+      BuildGuidDataHob (&Hob.Guid->Name, VmmData, sizeof (TD_VMM_DATA));
       break;
     }
     Hob.Raw = GET_NEXT_HOB (Hob);

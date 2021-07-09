@@ -261,6 +261,7 @@
 
   RealTimeClockLib|OvmfPkg/Library/XenRealTimeClockLib/XenRealTimeClockLib.inf
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
+  ChVmmDataLib|OvmfPkg/Library/ChVmmDataLib/ChVmmDataLib.inf
 
 [LibraryClasses.common]
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf

@@ -372,13 +372,13 @@ InstallAcpiTables (
     Status = InstallQemuFwCfgTables (AcpiTable);
   }
 
-  if (EFI_ERROR (Status)) {
-    Status = InstallCloudHypervisorTables (AcpiTable);
-  }
+//  if (EFI_ERROR (Status)) {
+//    Status = InstallCloudHypervisorTables (AcpiTable);
+//  }
 
 
   if (EFI_ERROR (Status)) {
-    Status = InstallOvmfFvTables (AcpiTable);
+    //Status = InstallOvmfFvTables (AcpiTable);
   }
 
   return Status;

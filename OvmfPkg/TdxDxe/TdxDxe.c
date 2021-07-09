@@ -29,6 +29,7 @@
 #include <IndustryStandard/Tdx.h>
 #include <Library/TdxLib.h>
 #include <TdxAcpiTable.h>
+#include <ChAcpiTable.h>
 
 /**
   Location of resource hob matching type and starting address
@@ -126,7 +127,8 @@ TdxDxeEntryPoint (
   UINT32                        CpuMaxLogicalProcessorNumber;
   TD_RETURN_DATA                TdReturnData;
   EFI_EVENT                     QemuAcpiTableEvent;
-  void                          *Registration;
+  void                          *RegistrationChAcpi;
+  void                          *RegistrationAlterAcpi;
 
   GuidHob = GetFirstGuidHob (&gUefiOvmfPkgTdxPlatformGuid);
 
@@ -135,6 +137,9 @@ TdxDxeEntryPoint (
   }
 
   PlatformInfo = (EFI_HOB_PLATFORM_INFO *) GET_GUID_HOB_DATA (GuidHob);
+
+  //Register the protocol notify of EFI_ACPI_TABLE_PROTOCOL.
+  EfiCreateProtocolNotifyEvent (&gEfiAcpiTableProtocolGuid, TPL_CALLBACK, ChInstallAcpiTable, NULL, &RegistrationChAcpi);
 
   //
   // Call TDINFO to get actual number of cpus in domain
@@ -169,7 +174,7 @@ TdxDxeEntryPoint (
   Status = gBS->RegisterProtocolNotify (
                   &gQemuAcpiTableNotifyProtocolGuid,
                   QemuAcpiTableEvent,
-                  &Registration
+                  &RegistrationAlterAcpi
                   );
 
 #define INIT_PCDSET(NAME, RES) do { \

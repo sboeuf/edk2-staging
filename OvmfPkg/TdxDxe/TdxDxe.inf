@@ -19,6 +19,7 @@
 [Sources]
   TdxDxe.c
   TdxAcpiTable.c
+  ChAcpiTable.c
 
 [Packages]
   MdeModulePkg/MdeModulePkg.dec
@@ -36,6 +37,7 @@
   UefiDriverEntryPoint
   TdxLib
   HobLib
+  ChVmmDataLib
 
 [Depex]
   TRUE

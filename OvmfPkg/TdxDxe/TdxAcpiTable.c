@@ -32,7 +32,7 @@
 STATIC
 EFI_STATUS
 EFIAPI
-QemuInstallAcpiMadtTable (
+InstallAcpiMadtTable (
   IN   EFI_ACPI_TABLE_PROTOCOL       *AcpiProtocol,
   IN   VOID                          *AcpiTableBuffer,
   IN   UINTN                         AcpiTableBufferSize,
@@ -199,7 +199,7 @@ AlterAcpiTable (
       // original one, because unintall table will free the memory which will be
       // copied in QemuInstallAcpiMadtTable().
       //
-      QemuInstallAcpiMadtTable (AcpiTable, Table, Table->Length, &UpdatedTableKey);
+      InstallAcpiMadtTable (AcpiTable, Table, Table->Length, &UpdatedTableKey);
       Status = AcpiTable->UninstallAcpiTable (AcpiTable, OriginalTableKey);
       if (EFI_ERROR (Status)) {
         DEBUG ((DEBUG_ERROR, "Uninstall MADT table error.\n"));
